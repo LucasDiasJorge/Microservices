@@ -20,7 +20,7 @@ O projeto é dividido em dois microserviços principais:
 
 O projeto será expandido com a adição das seguintes tecnologias e funcionalidades:
 
-- **Hystrix**: Para implementar padrões de tolerância a falhas e melhorar a resiliência do sistema.
+- **Resilience4j**: Para implementar padrões de tolerância a falhas e melhorar a resiliência do sistema.
 - **Zuul Gateway**: Para gerenciar e rotear requisições entre os microserviços, proporcionando uma única entrada para o sistema.
 - **Servidor de Configuração Centralizado**: Para gerenciar a configuração dos microserviços de forma centralizada, permitindo alterações dinâmicas sem necessidade de reinício.
 - **OAuth 2**: Para implementar autenticação e autorização, garantindo que os serviços estejam protegidos e apenas acessíveis a usuários autorizados.
