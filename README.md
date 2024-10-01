@@ -15,16 +15,17 @@ O projeto é dividido em dois microserviços principais:
 - **Eureka**: Serviço de descoberta que permite que os microserviços se encontrem e se comuniquem.
 - **OpenFeign**: Biblioteca para simplificar a comunicação entre microserviços através de chamadas REST.
 - **H2 Database**: Banco de dados em memória para testes.
+- **Spring Cloud Gateway**: Para gerenciar e rotear requisições entre os microserviços, proporcionando uma única entrada para o sistema.
 
 ## Futuras Evoluções
 
-O projeto será expandido com a adição das seguintes tecnologias e funcionalidades:
+  O projeto será expandido com a adição das seguintes tecnologias e funcionalidades:
 
 - **Resilience4j**: Para implementar padrões de tolerância a falhas e melhorar a resiliência do sistema.
-- **Zuul Gateway**: Para gerenciar e rotear requisições entre os microserviços, proporcionando uma única entrada para o sistema.
 - **Servidor de Configuração Centralizado**: Para gerenciar a configuração dos microserviços de forma centralizada, permitindo alterações dinâmicas sem necessidade de reinício.
 - **OAuth 2**: Para implementar autenticação e autorização, garantindo que os serviços estejam protegidos e apenas acessíveis a usuários autorizados.
 - **Docker**: Para implementar facilidades no deploy e uso de contêineres.
+- **Kafka**: Para implementar mensageria e programação orientada a eventos entre os serviços.
 
 ## Configuração do Ambiente
 

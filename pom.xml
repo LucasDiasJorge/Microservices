@@ -13,5 +13,6 @@
         <module>Workers</module>
         <module>Payroll</module>
         <module>Eureka</module>
+        <module>API-Gateway</module>
     </modules>
 </project>
