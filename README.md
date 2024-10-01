@@ -14,8 +14,8 @@ O projeto é dividido em dois microserviços principais:
 - **Spring Boot**: Framework para criação de aplicações Java.
 - **Eureka**: Serviço de descoberta que permite que os microserviços se encontrem e se comuniquem.
 - **OpenFeign**: Biblioteca para simplificar a comunicação entre microserviços através de chamadas REST.
-- **H2 Database**: Banco de dados em memória para testes.
-- **Spring Cloud Gateway**: Para gerenciar e rotear requisições entre os microserviços, proporcionando uma única entrada para o sistema.
+- **H2 Database**: Banco de dados em memória para testes. _[help](https://stackoverflow.com/questions/67695069/spring-boot-datasource-initialization-error-with-data-sql-script-after-2-5-0-upg)_
+- **Spring Cloud Gateway**: Para gerenciar e rotear requisições entre os microserviços, proporcionando uma única entrada para o sistema. _[help](https://www.youtube.com/watch?v=ju7NTqJxKRs)_
 
 ## Futuras Evoluções
 

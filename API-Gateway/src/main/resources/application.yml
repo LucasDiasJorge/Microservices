@@ -1,14 +1,27 @@
-
-
 spring:
   application:
-    name: API Gateway
+    name: gateway-service
   cloud:
     gateway:
-      routes:
-        - id: rota-exemplo
-          uri: http://httpbin.org:80 # URL do serviço que será acessado
-          predicates:
-            - Path=/get # Roteia requisições com caminho "/get"
-          filters:
-            - AddRequestHeader=X-Request-Example, ValorExemplo # Adiciona um cabeçalho customizado
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web.reactive.function.client: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
