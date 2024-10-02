@@ -13,15 +13,15 @@ import java.util.logging.Logger;
 
 import java.util.List;
 
-@RestController
 @RefreshScope
+@RestController
 @RequestMapping(value = "/workers")
 public class WorkerResources {
 
     private static final Logger logger = Logger.getLogger(WorkerResources.class.getName());
 
     @Value("${test.config}")
-    private String value;
+    private String testConfig;
 
     @Autowired
     private Environment environment;
@@ -31,7 +31,7 @@ public class WorkerResources {
 
     @GetMapping(value = "/configs")
     public ResponseEntity<Void> getConfigs(){
-        logger.info("From port: " + environment.getProperty("server.port") + " Config value is: " + value);
+        logger.info("From port: " + environment.getProperty("server.port") + " Config test value is: " + testConfig);
         return ResponseEntity.noContent().build();
     }
 
