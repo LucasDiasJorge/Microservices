@@ -13,10 +13,19 @@ spring:
               args:
                 name: payrollCircuitBreaker
                 fallbackUri: forward:/fallback
+        - id: worker_route
+          uri: lb://WORKER
+          predicates:
+            - Path=/worker/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: payrollCircuitBreaker
+                fallbackUri: forward:/fallback
 
       httpclient:
         connect-timeout: 1000
-        response-timeout: 15s
+        response-timeout: 5s
 
       discovery:
         locator:
@@ -26,20 +35,12 @@ spring:
       resilience4j:
         configs:
           default:
-            registerHealthIndicator: true
-            failureRateThreshold: 50
-            slowCallRateThreshold: 50
-            slowCallDurationThreshold: 2s
-            permittedNumberOfCallsInHalfOpenState: 3
-            slidingWindowSize: 10
-            minimumNumberOfCalls: 5
-            waitDurationInOpenState: 10s
-            slidingWindowType: COUNT_BASED
-            recordExceptions:
-              - java.io.IOException
-              - java.util.concurrent.TimeoutException
-            ignoreExceptions:
-              - java.lang.IllegalArgumentException
+            failureRateThreshold: 50          # Percentual de falhas necessário (50%)
+            slidingWindowSize: 10             # Tamanho da janela deslizante para calcular a taxa de falhas (10 requisições)
+            minimumNumberOfCalls: 5           # Número mínimo de requisições para começar a calcular a taxa de falhas
+            permittedNumberOfCallsInHalfOpenState: 3  # Quantas chamadas permitidas no estado half-open
+            waitDurationInOpenState: 10s      # Quanto tempo o Circuit Breaker permanece em estado aberto
+            slidingWindowType: COUNT_BASED    # Janela de contagem de requisições
 eureka:
   client:
     service-url:
