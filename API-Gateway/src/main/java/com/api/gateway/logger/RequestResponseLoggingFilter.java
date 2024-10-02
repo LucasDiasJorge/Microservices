@@ -1,4 +1,4 @@
-package com.api.gateway;
+package com.api.gateway.logger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

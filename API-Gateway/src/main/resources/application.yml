@@ -3,13 +3,43 @@ spring:
     name: gateway-service
   cloud:
     gateway:
+      routes:
+        - id: payroll_route
+          uri: lb://PAYROLL
+          predicates:
+            - Path=/payroll/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: payrollCircuitBreaker
+                fallbackUri: forward:/fallback
+
       httpclient:
         connect-timeout: 1000
-        response-timeout: 5s
+        response-timeout: 15s
+
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
+    circuitbreaker:
+      resilience4j:
+        configs:
+          default:
+            registerHealthIndicator: true
+            failureRateThreshold: 50
+            slowCallRateThreshold: 50
+            slowCallDurationThreshold: 2s
+            permittedNumberOfCallsInHalfOpenState: 3
+            slidingWindowSize: 10
+            minimumNumberOfCalls: 5
+            waitDurationInOpenState: 10s
+            slidingWindowType: COUNT_BASED
+            recordExceptions:
+              - java.io.IOException
+              - java.util.concurrent.TimeoutException
+            ignoreExceptions:
+              - java.lang.IllegalArgumentException
 eureka:
   client:
     service-url:
@@ -21,6 +51,8 @@ logging:
   level:
     org.springframework.cloud.gateway: DEBUG
     org.springframework.web.reactive.function.client: DEBUG
+    io.netty.resolver.dns: TRACE
+    reactor.netty: DEBUG
 
 management:
   endpoints:
