@@ -14,5 +14,6 @@
         <module>Payroll</module>
         <module>Eureka</module>
         <module>API-Gateway</module>
+        <module>Config-Server</module>
     </modules>
 </project>
