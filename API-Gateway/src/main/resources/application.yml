@@ -12,7 +12,7 @@ spring:
             - name: CircuitBreaker
               args:
                 name: payrollCircuitBreaker
-                fallbackUri: forward:/fallback
+                fallbackUri: forward:/fallback # Redireciona se falhar conforme regras do resilience4j
         - id: worker_route
           uri: lb://WORKER
           predicates:
@@ -20,8 +20,8 @@ spring:
           filters:
             - name: CircuitBreaker
               args:
-                name: payrollCircuitBreaker
-                fallbackUri: forward:/fallback
+                name: workerCircuitBreaker
+                fallbackUri: forward:/fallback # Redireciona se falhar conforme regras do resilience4j
 
       httpclient:
         connect-timeout: 1000
