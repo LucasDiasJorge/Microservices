@@ -23,7 +23,7 @@ O projeto é dividido em dois microserviços principais:
 
   O projeto será expandido com a adição das seguintes tecnologias e funcionalidades:
 
-- **OAuth 2**: Para implementar autenticação e autorização, garantindo que os serviços estejam protegidos e apenas acessíveis a usuários autorizados.
+- **OAuth 2**: Para implementar autenticação e autorização, garantindo que os serviços estejam protegidos e apenas acessíveis a usuários autorizados. _[Thiago Marquet](https://github.com/Thiago-Marquet)_
 - **Docker**: Para implementar facilidades no deploy e uso de contêineres.
 - **Kafka**: Para implementar mensageria e programação orientada a eventos entre os serviços.
 
