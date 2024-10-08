@@ -16,5 +16,6 @@
         <module>Eureka</module>
         <module>API-Gateway</module>
         <module>Config-Server</module>
+        <module>OAuth</module>
     </modules>
 </project>
