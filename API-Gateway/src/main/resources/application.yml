@@ -22,6 +22,15 @@ spring:
               args:
                 name: workerCircuitBreaker
                 fallbackUri: forward:/fallback # Redireciona se falhar conforme regras do resilience4j
+        - id: user_route
+          uri: lb://USER
+          predicates:
+            - Path=/user/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: userCircuitBreaker
+                fallbackUri: forward:/fallback # Redireciona se falhar conforme regras do resilience4j
 
       httpclient:
         connect-timeout: 1000
