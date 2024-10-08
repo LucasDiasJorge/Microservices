@@ -12,6 +12,7 @@
     <modules>
         <module>Workers</module>
         <module>Payroll</module>
+        <module>User</module>
         <module>Eureka</module>
         <module>API-Gateway</module>
         <module>Config-Server</module>
