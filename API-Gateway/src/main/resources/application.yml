@@ -1,3 +1,6 @@
+server:
+  port: 9090
+
 spring:
   application:
     name: gateway-service
@@ -87,11 +90,11 @@ management:
         include: "*"
 
 keycloak:
-  url: http://localhost:8081
-  client-id: gateway
-  realm: lucasjorge
+  url: http://localhost:8080
+  client-id: du-hast
+  realm: ich-weil
   admin-url: ${keycloak.url}/admin/realms/${keycloak.realm}
   realms-url: ${keycloak.url}/realms/${keycloak.realm}
   auth:
     openid-token: ${keycloak.realms-url}/protocol/openid-connect/token
-    client-secret: A1ZnEjtHH73zLU9WVvGxHnEM24RKa3tb
+    client-secret: ocRP5740n3OTUQoDiXAbOuruPwy3LINP
