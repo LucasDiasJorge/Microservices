@@ -1,4 +1,4 @@
-package com.api.oauth.resources;
+package com.api.oauth.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

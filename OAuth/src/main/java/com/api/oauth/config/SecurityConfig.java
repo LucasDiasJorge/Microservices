@@ -15,7 +15,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizeRequests -> {
                             authorizeRequests.requestMatchers("/public").permitAll();
-                            authorizeRequests.requestMatchers("/logout").permitAll();
+                            authorizeRequests.requestMatchers("/auth").permitAll();
                             authorizeRequests.anyRequest().authenticated();
                         }
                 ).oauth2ResourceServer(conf -> conf.jwt(Customizer.withDefaults()))

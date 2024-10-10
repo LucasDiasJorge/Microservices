@@ -1,0 +1,39 @@
+# Service name
+spring:
+  application:
+    name: OAuth
+  security:
+    oauth2:
+      resource server:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/ich-weil
+
+  # Database configuration
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/user_auth_service
+    username: postgres
+    password: postgres
+  jpa:
+    database: POSTGRESQL
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+
+  #sql:
+    #init:
+      #mode: always
+
+# Random Port
+server:
+  port: 0
+
+# Eureka configuration
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
