@@ -6,7 +6,7 @@ spring:
     oauth2:
       resource server:
         jwt:
-          issuer-uri: http://localhost:8080/realms/ich-weil
+          issuer-uri: http://localhost:8080/realms/myrealm
 
   # Database configuration
   datasource:
@@ -37,3 +37,13 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     register-with-eureka: true
     fetch-registry: true
+
+keycloak:
+  url: http://localhost:8080
+  client-id: my-client
+  realm: myrealm
+  admin-url: ${keycloak.url}/admin/realms/${keycloak.realm}
+  realms-url: ${keycloak.url}/realms/${keycloak.realm}
+  auth:
+    openid-token: ${keycloak.realms-url}/protocol/openid-connect/token
+    client-secret: 9cEohGg6j3COw0oprJuw1nVXaEYfsiSN

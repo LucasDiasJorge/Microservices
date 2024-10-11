@@ -76,10 +76,10 @@ management:
 
 keycloak:
   url: http://localhost:8080
-  client-id: du-hast
-  realm: ich-weil
+  client-id: my-client
+  realm: myrealm
   admin-url: ${keycloak.url}/admin/realms/${keycloak.realm}
   realms-url: ${keycloak.url}/realms/${keycloak.realm}
   auth:
     openid-token: ${keycloak.realms-url}/protocol/openid-connect/token
-    client-secret: ocRP5740n3OTUQoDiXAbOuruPwy3LINP
+    client-secret: 9cEohGg6j3COw0oprJuw1nVXaEYfsiSN
