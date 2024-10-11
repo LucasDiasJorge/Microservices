@@ -1,5 +1,6 @@
 package com.api.oauth.controllers;
 
+import com.api.oauth.responses.ApiResponse;
 import com.api.oauth.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.Map;
 @RestController
 public class AuthController {
 
-    public AuthService authService;
+    private AuthService authService;
 
     @Autowired
     public AuthController(AuthService authService) {
@@ -20,10 +21,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<Object> auth(@RequestBody Map<String, Object> body){
-
-        return (ResponseEntity<Object>) authService.auth(body);
-
+    public ResponseEntity<ApiResponse<Object>> auth(@RequestBody Map<String, Object> body) {
+        return authService.auth(body);
     }
-
 }
