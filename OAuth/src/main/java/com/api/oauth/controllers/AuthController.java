@@ -22,9 +22,7 @@ public class AuthController {
     @PostMapping("/auth")
     public ResponseEntity<Object> auth(@RequestBody Map<String, Object> body){
 
-        System.out.println("CUDIMEL");
-
-        return ResponseEntity.ok(authService.auth(body));
+        return (ResponseEntity<Object>) authService.auth(body);
 
     }
 

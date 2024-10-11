@@ -6,6 +6,7 @@ import com.api.oauth.services.http.HttpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,24 +35,39 @@ public class AuthService {
     private String clientSecret;
 
     @Autowired
-    public AuthService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, HttpService httpService) {
+    public AuthService(UserRepository userRepository, HttpService httpService) {
         this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.httpService = httpService;
     }
 
     public Object auth(Map<String, Object> body) {
         String email = (String) body.get("email");
-        String pass = bCryptPasswordEncoder.encode((String) body.get("password"));
 
         User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            return null;
+        }
 
         // Use initialized variables
         String scope = "email openid profile roles";
         String grantType = "password";
-        String username = "lucas_jorg@hotmail.com";
-        String password = "123456";
 
-        return httpService.postFormUrlEncoded(url, clientId, clientSecret, scope, grantType, username, password);
+        try {
+            return httpService.postFormUrlEncoded(url, clientId, clientSecret, scope, grantType, email, (String) body.get("password"));
+        } catch (Exception e) {
+        log.error("Error during authentication: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(interpretError(e.getMessage()));
+        }
+    }
+
+    private String interpretError(String errorMessage) {
+        if (errorMessage.contains("invalid_grant")) {
+            return "Invalid user credentials. Please check your email and password.";
+        } else if (errorMessage.contains("user_not_found")) {
+            return "User not found. Please register first.";
+        } else {
+            return "Authentication failed due to an unknown error.";
+        }
     }
 }
