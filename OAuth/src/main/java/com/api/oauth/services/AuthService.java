@@ -20,7 +20,7 @@ public class AuthService {
 
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private HttpService httpService;
 
@@ -40,11 +40,11 @@ public class AuthService {
         this.httpService = httpService;
     }
 
-    public ResponseEntity<Map<String, Object>> auth(Map<String, Object> body) {
+    public Object auth(Map<String, Object> body) {
         String email = (String) body.get("email");
         String pass = bCryptPasswordEncoder.encode((String) body.get("password"));
 
-        Optional<User> user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
 
         // Use initialized variables
         String scope = "email openid profile roles";
@@ -52,16 +52,6 @@ public class AuthService {
         String username = "lucas_jorg@hotmail.com";
         String password = "123456";
 
-        System.out.println(httpService.postFormUrlEncoded(url, clientId, clientSecret, scope, grantType, username, password).getBody().toString());
-
-        if (user.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        if (!(user.get().getPassword().equals(pass))) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        return null;
+        return httpService.postFormUrlEncoded(url, clientId, clientSecret, scope, grantType, username, password);
     }
 }

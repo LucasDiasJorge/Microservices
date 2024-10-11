@@ -13,10 +13,14 @@ public class UserService {
     private static Logger logger = Logger.getLogger(UserService.class.getName());
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public User findByEmail(String email) {
-        User user = userRepository.findByEmail(email).get();
+        User user = userRepository.findByEmail(email);
         if(user == null) {
             logger.warning("User not found");
             throw new IllegalArgumentException("User not found");

@@ -12,6 +12,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
+
 @Service
 public class HttpService {
 
@@ -39,9 +41,9 @@ public class HttpService {
         return headers;
     }
 
-    public ResponseEntity<Object> postFormUrlEncoded(String url, String clientId, String clientSecret,
-                                                     String scope, String grantType, String username,
-                                                     String password) {
+    public Object postFormUrlEncoded(String url, String clientId, String clientSecret,
+                                                  String scope, String grantType, String username,
+                                                  String password) {
         HttpHeaders headers = createHeaders();
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
@@ -54,12 +56,6 @@ public class HttpService {
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
 
-        logRequest(HttpMethod.POST, url, requestEntity);
-
-        ResponseEntity<Object> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, Object.class);
-
-        logResponse(responseEntity);
-
-        return responseEntity;
+        return restTemplate.exchange(url, HttpMethod.POST, requestEntity, Object.class).getBody();
     }
 }
