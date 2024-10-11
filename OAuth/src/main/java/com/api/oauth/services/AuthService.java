@@ -2,6 +2,7 @@ package com.api.oauth.services;
 
 import com.api.oauth.entities.User;
 import com.api.oauth.repositories.UserRepository;
+import com.api.oauth.responses.ApiResponse; // Import the new response class
 import com.api.oauth.services.http.HttpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Value;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AuthService {
@@ -22,7 +23,6 @@ public class AuthService {
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     private final UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
     private HttpService httpService;
 
     @Value("${keycloak.auth.openid-token}")
@@ -40,13 +40,13 @@ public class AuthService {
         this.httpService = httpService;
     }
 
-    public Object auth(Map<String, Object> body) {
+    public ResponseEntity<ApiResponse<Object>> auth(Map<String, Object> body) {
         String email = (String) body.get("email");
-
         User user = userRepository.findByEmail(email);
 
         if (user == null) {
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(false, "User not found. Please register first.", null));
         }
 
         // Use initialized variables
@@ -54,18 +54,22 @@ public class AuthService {
         String grantType = "password";
 
         try {
-            return httpService.postFormUrlEncoded(url, clientId, clientSecret, scope, grantType, email, (String) body.get("password"));
+            Map<String, Object> response = (Map<String, Object>) httpService.postFormUrlEncoded(url, clientId, clientSecret, scope, grantType, email, (String) body.get("password"));
+            String accessToken = (String) response.get("access_token");
+
+            // Successful authentication response
+            return ResponseEntity.ok(new ApiResponse<>(true, "Authentication successful.", accessToken));
         } catch (Exception e) {
-        log.error("Error during authentication: {}", e.getMessage());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(interpretError(e.getMessage()));
+            log.error("Error during authentication: {}", e.getMessage());
+            String errorMessage = interpretError(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse<>(false, errorMessage, null));
         }
     }
 
     private String interpretError(String errorMessage) {
         if (errorMessage.contains("invalid_grant")) {
             return "Invalid user credentials. Please check your email and password.";
-        } else if (errorMessage.contains("user_not_found")) {
-            return "User not found. Please register first.";
         } else {
             return "Authentication failed due to an unknown error.";
         }
