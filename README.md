@@ -16,14 +16,16 @@ O projeto é dividido em dois microserviços principais:
 - **OpenFeign**: Biblioteca para simplificar a comunicação entre microserviços através de chamadas REST.
 - **H2 Database**: Banco de dados em memória para testes. _[help](https://stackoverflow.com/questions/67695069/spring-boot-datasource-initialization-error-with-data-sql-script-after-2-5-0-upg)_
 - **Spring Cloud Gateway**: Para gerenciar e rotear requisições entre os microserviços, proporcionando uma única entrada para o sistema. _[help](https://www.youtube.com/watch?v=ju7NTqJxKRs)_
-- **Resilience4j**: Para implementar padrões de tolerância a falhas e melhorar a resiliência do sistema. _[help](https://resilience4j.readme.io/docs/getting-started)_
-- **Spring Cloud Config**: Para gerenciar a configuração dos microserviços de forma centralizada, permitindo alterações dinâmicas sem necessidade de reinício.
+- **Resilience4j**: Para implementar padrões de tolerância a falhas e melhorar a resiliência do sistema. _[help](https://resilience4j.readme.io/docs/getting-started)_ _[help²](https://www.udemy.com/course/master-microservices-with-spring-docker-kubernetes/)_
+- **Spring Cloud Config**: Para gerenciar a configuração dos microserviços de forma centralizada, permitindo alterações dinâmicas sem necessidade de reinício. (Manutenção)
+- **OAuth 2**: Para implementar autenticação, garantindo que os serviços estejam protegidos e apenas acessíveis a usuários autorizados. _[Thiago Marquet](https://github.com/Thiago-Marquet)_
+- **Docker**: Para implementar facilidades no deploy no serviço de keycloak. _[help](https://github.com/LucasDiasJorge/Tutorial-Docker/blob/main/Example2%20(Keycloak)/docker-compose.yml)_
 
 ## Futuras Evoluções
 
   O projeto será expandido com a adição das seguintes tecnologias e funcionalidades:
 
-- **OAuth 2**: Para implementar autenticação e autorização, garantindo que os serviços estejam protegidos e apenas acessíveis a usuários autorizados. _[Thiago Marquet](https://github.com/Thiago-Marquet)_
+- **OAuth 2**: Para implementar autorização por Role do usuário.
 - **Docker**: Para implementar facilidades no deploy e uso de contêineres.
 - **Kafka**: Para implementar mensageria e programação orientada a eventos entre os serviços.
 
