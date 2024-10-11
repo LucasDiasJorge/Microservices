@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
+
 @Service
 public class AuthService {
 
@@ -22,6 +24,15 @@ public class AuthService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private HttpService httpService;
 
+    @Value("${keycloak.auth.openid-token}")
+    private String url;
+
+    @Value("${keycloak.client-id}")
+    private String clientId;
+
+    @Value("${keycloak.auth.client-secret}")
+    private String clientSecret;
+
     @Autowired
     public AuthService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, HttpService httpService) {
         this.userRepository = userRepository;
@@ -29,32 +40,28 @@ public class AuthService {
         this.httpService = httpService;
     }
 
-    public ResponseEntity<Map<String, Object>> auth(Map<String,Object> body){
+    public ResponseEntity<Map<String, Object>> auth(Map<String, Object> body) {
         String email = (String) body.get("email");
         String pass = bCryptPasswordEncoder.encode((String) body.get("password"));
 
         Optional<User> user = userRepository.findByEmail(email);
 
-        String url = "http://localhost:8080/realms/ich-weil/protocol/openid-connect/token";
-        String clientId = "du-hast";
-        String clientSecret = "oCRP5740n3OTUQoDiXAbOuruPwy3LINP";
+        // Use initialized variables
         String scope = "email openid profile roles";
         String grantType = "password";
         String username = "lucas_jorg@hotmail.com";
         String password = "123456";
 
-        System.out.println(httpService.postFormUrlEncoded(url,clientId,clientSecret,scope,grantType,username,password).getBody().toString());
+        System.out.println(httpService.postFormUrlEncoded(url, clientId, clientSecret, scope, grantType, username, password).getBody().toString());
 
-        if(user.isEmpty()){
+        if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        if(!(user.get().getPassword().equals(pass))){
+        if (!(user.get().getPassword().equals(pass))) {
             return ResponseEntity.badRequest().build();
         }
 
         return null;
-
     }
-
 }
