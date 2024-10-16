@@ -2,6 +2,7 @@ package com.api.oauth.services;
 
 import com.api.oauth.entities.User;
 import com.api.oauth.repositories.UserRepository;
+import com.api.oauth.responses.ApiAuthResponse;
 import com.api.oauth.responses.ApiResponse; // Import the new response class
 import com.api.oauth.services.http.HttpService;
 import org.slf4j.Logger;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +43,7 @@ public class AuthService {
         this.httpService = httpService;
     }
 
-    public ResponseEntity<ApiResponse<Object>> auth(Map<String, Object> body) {
+    public ResponseEntity<?> auth(Map<String, Object> body) {
         String email = (String) body.get("email");
         User user = userRepository.findByEmail(email);
 
@@ -49,16 +52,21 @@ public class AuthService {
                     .body(new ApiResponse<>(false, "User not found. Please register first.", null));
         }
 
-        // Use initialized variables
         String scope = "email openid profile roles";
         String grantType = "password";
 
         try {
-            Map<String, Object> response = (Map<String, Object>) httpService.postFormUrlEncoded(url, clientId, clientSecret, scope, grantType, email, (String) body.get("password"));
+            Map<String, Object> response = (Map<String, Object>) httpService.postFormUrlEncoded(
+                    url, clientId, clientSecret, scope, grantType, email, (String) body.get("password")
+            );
             String accessToken = (String) response.get("access_token");
 
-            // Successful authentication response
-            return ResponseEntity.ok(new ApiResponse<>(true, "Authentication successful.", accessToken));
+            int expiresIn = (Integer) response.get("expires_in");
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.SECOND, expiresIn);
+            Date expirationDate = calendar.getTime();
+
+            return ResponseEntity.ok(new ApiAuthResponse<>(true, "Authentication successful.", accessToken, expirationDate));
         } catch (Exception e) {
             log.error("Error during authentication: {}", e.getMessage());
             String errorMessage = interpretError(e.getMessage());
@@ -68,10 +76,14 @@ public class AuthService {
     }
 
     private String interpretError(String errorMessage) {
-        if (errorMessage.contains("invalid_grant")) {
+
+        if (errorMessage.contains("unauthorized_client")) {
             return "Invalid user credentials. Please check your email and password.";
+        } else if (errorMessage.contains("Realm does not exist")) {
+            return "Realm does not exist.";
         } else {
             return "Authentication failed due to an unknown error.";
         }
     }
+
 }

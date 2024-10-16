@@ -21,7 +21,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<ApiResponse<Object>> auth(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<?> auth(@RequestBody Map<String, Object> body) {
         return authService.auth(body);
     }
 }
