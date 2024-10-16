@@ -9,7 +9,7 @@ spring:
     oauth2:
       resource server:
         jwt:
-          jwk-set-uri: "${keycloak.url}/realms/${keycloak.realm}/protocol/openid-connect/certs"
+          issuer-uri: http://localhost:8080/realms/my-realm
 
   cloud:
     gateway:
@@ -77,9 +77,17 @@ management:
 keycloak:
   url: http://localhost:8080
   client-id: my-client
-  realm: myrealm
+  realm: my-realm
   admin-url: ${keycloak.url}/admin/realms/${keycloak.realm}
   realms-url: ${keycloak.url}/realms/${keycloak.realm}
   auth:
     openid-token: ${keycloak.realms-url}/protocol/openid-connect/token
-    client-secret: 9cEohGg6j3COw0oprJuw1nVXaEYfsiSN
+    client-secret: wvB2DqmQPGlPpPiapshNTJw5nIN0NWmS
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+      cloud:
+        gateway: DEBUG
