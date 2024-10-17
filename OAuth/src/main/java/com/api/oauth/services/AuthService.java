@@ -77,7 +77,7 @@ public class AuthService {
 
     private String interpretError(String errorMessage) {
 
-        if (errorMessage.contains("unauthorized_client")) {
+        if (errorMessage.contains("unauthorized_client") || errorMessage.contains("invalid_grant")) {
             return "Invalid user credentials. Please check your email and password.";
         } else if (errorMessage.contains("Realm does not exist")) {
             return "Realm does not exist.";
