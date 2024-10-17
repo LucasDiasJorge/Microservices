@@ -7,13 +7,13 @@ public class ApiAuthResponse<T> {
     private boolean success;
     private String message;
     private String token;
-    private Date expiresIn;
+    private Date expiresAt;
 
-    public ApiAuthResponse(boolean success, String message, String token, Date expiresIn) {
+    public ApiAuthResponse(boolean success, String message, String token, Date expiresAt) {
         this.success = success;
         this.message = message;
         this.token = token;
-        this.expiresIn = expiresIn;
+        this.expiresAt = expiresAt;
     }
 
     // Getters and Setters
@@ -41,11 +41,11 @@ public class ApiAuthResponse<T> {
         this.token = token;
     }
 
-    public Date getExpiresIn() {
-        return expiresIn;
+    public Date getExpiresAt() {
+        return expiresAt;
     }
 
-    public void setExpiresIn(Date expiresIn) {
-        this.expiresIn = expiresIn;
+    public void setExpiresAt(Date expiresAt) {
+        this.expiresAt = expiresAt;
     }
 }
