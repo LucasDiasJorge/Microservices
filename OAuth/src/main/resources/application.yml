@@ -41,7 +41,7 @@ eureka:
 keycloak:
   url: http://localhost:8080
   client-id: my-client
-  realm: myrealm
+  realm: my-realm
   admin-url: ${keycloak.url}/admin/realms/${keycloak.realm}
   realms-url: ${keycloak.url}/realms/${keycloak.realm}
   auth:
