@@ -1,4 +1,4 @@
-# Projeto de Microserviços com Java
+# Projeto de Microsserviços com Java
 
 Este projeto é uma aplicação que tem como o objetivo de demonstrar como configurar e utilizar tecnologias modernas para criar um sistema escalável e distribuído.
 
