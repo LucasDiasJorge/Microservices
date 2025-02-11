@@ -12,10 +12,9 @@
     <modules>
         <module>Workers</module>
         <module>Payroll</module>
-        <module>Keycloak/Integration</module>
         <module>Eureka</module>
         <module>API-Gateway</module>
         <module>Config-Server</module>
-        <module>OAuth</module>
+        <module>Keycloak/Integration</module>
     </modules>
 </project>
