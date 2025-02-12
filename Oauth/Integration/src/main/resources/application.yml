@@ -1,12 +1,12 @@
 spring:
   application:
-    name: keycloak-service
+    name: oauth-service
 
     security:
       oauth2:
         resource-server:
           jwt:
-            issuer-uri: http://localhost:8080/realms/my-realm/.well-known/openid-configuration
+            issuer-uri: http://localhost:8080/realms/my-realm
 
 server:
   port: 4321
@@ -15,7 +15,7 @@ keycloak:
   server-url: http://localhost:8080
   realm: my-realm
   client-id: my-client
-  client-secret: zUN1ZTrYZArupFi1YfuFmea8DLIWEcZV
+  client-secret: v6Qmi47ghXPIfOqaN8cji4znI3zXW7K3
 
 eureka:
   client:

@@ -1,4 +1,4 @@
-package com.api.keycloak.services;
+package com.api.oauth.services;
 
 import jakarta.ws.rs.core.Response;
 import org.keycloak.TokenVerifier;

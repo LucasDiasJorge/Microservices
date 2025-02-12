@@ -14,9 +14,9 @@ public class GatewayConfig {
     @Bean
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
         Map<String, String> routes = new HashMap<>();
-        routes.put("/keycloak/auth", "/auth");
-        routes.put("/keycloak/create", "/create");
-        routes.put("/keycloak/validate", "/validate");
+        routes.put("/oauth/auth", "/auth");
+        routes.put("/oauth/create", "/create");
+        routes.put("/oauth/validate", "/validate");
 
         RouteLocatorBuilder.Builder routesBuilder = builder.routes();
 
@@ -25,7 +25,7 @@ public class GatewayConfig {
                         path.replace("/", "_") + "_route", // Nome da rota (ex: keycloak_auth_route)
                         r -> r.path(path)
                                 .filters(f -> f.rewritePath(path, rewritePath))
-                                .uri("lb://KEYCLOAK-SERVICE")
+                                .uri("lb://OAUTH-SERVICE")
                 ));
 
         return routesBuilder.build();

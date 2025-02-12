@@ -12,7 +12,7 @@
 	<artifactId>Integration</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Integration</name>
-	<description>Keycloak integration</description>
+	<description>Keycloak integration plus Oauth</description>
 	<url/>
 	<properties>
 		<java.version>21</java.version>

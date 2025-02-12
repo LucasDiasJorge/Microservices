@@ -1,6 +1,6 @@
-package com.api.keycloak.controller;
+package com.api.oauth.controller;
 
-import com.api.keycloak.services.KeycloakService;
+import com.api.oauth.services.KeycloakService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
