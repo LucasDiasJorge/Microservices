@@ -1,3 +1,13 @@
+spring:
+  application:
+    name: keycloak-service
+
+    security:
+      oauth2:
+        resource-server:
+          jwt:
+            issuer-uri: http://localhost:8080/realms/my-realm/.well-known/openid-configuration
+
 server:
   port: 4321
 
@@ -5,4 +15,11 @@ keycloak:
   server-url: http://localhost:8080
   realm: my-realm
   client-id: my-client
-  client-secret: v6Qmi47ghXPIfOqaN8cji4znI3zXW7K3
+  client-secret: zUN1ZTrYZArupFi1YfuFmea8DLIWEcZV
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
