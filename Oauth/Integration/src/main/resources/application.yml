@@ -1,25 +1,10 @@
 spring:
   application:
     name: oauth-service
-
-    security:
-      oauth2:
-        resource-server:
-          jwt:
-            issuer-uri: http://localhost:8080/realms/my-realm
-
-server:
-  port: 4321
-
-keycloak:
-  server-url: http://localhost:8080
-  realm: my-realm
-  client-id: my-client
-  client-secret: v6Qmi47ghXPIfOqaN8cji4znI3zXW7K3
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
+  profiles:
+    active: dev
+  cloud:
+    config:
+      enabled: true
+  config:
+    import: "configserver:http://localhost:8888"
