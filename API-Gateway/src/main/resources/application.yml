@@ -1,63 +1,10 @@
-server:
-  port: 9090
-
 spring:
   application:
     name: gateway-service
-
-  security:
-    oauth2:
-      resource server:
-        jwt:
-          issuer-uri: http://localhost:8080/realms/my-realm
-
-
-      httpclient:
-        connect-timeout: 1000
-        response-timeout: 5s
-
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-    circuitbreaker:
-      resilience4j:
-        configs:
-          default:
-            failureRateThreshold: 50          # Percentual de falhas necessário (50%)
-            slidingWindowSize: 10             # Tamanho da janela deslizante para calcular a taxa de falhas (10 requisições)
-            minimumNumberOfCalls: 5           # Número mínimo de requisições para começar a calcular a taxa de falhas
-            permittedNumberOfCallsInHalfOpenState: 3  # Quantas chamadas permitidas no estado half-open
-            waitDurationInOpenState: 10s      # Quanto tempo o Circuit Breaker permanece em estado aberto
-            slidingWindowType: COUNT_BASED    # Janela de contagem de requisições
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
-keycloak:
-  url: http://localhost:8080
-  client-id: my-client
-  realm: my-realm
-  admin-url: ${keycloak.url}/admin/realms/${keycloak.realm}
-  realms-url: ${keycloak.url}/realms/${keycloak.realm}
-  auth:
-    openid-token: ${keycloak.realms-url}/protocol/openid-connect/token
-    client-secret: wvB2DqmQPGlPpPiapshNTJw5nIN0NWmS
-
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
-      cloud:
-        gateway: DEBUG
+  profiles:
+    active: dev
+  cloud:
+    config:
+      enabled: true
+  config:
+    import: "configserver:http://localhost:8888"
