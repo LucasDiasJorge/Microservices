@@ -18,20 +18,13 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createUser(@RequestBody Map<String, String> body) {
-        String username = body.get("username");
-        String password = body.get("password");
-        String email = body.get("email");
-
-        String response = keycloakService.createUser(username, email, password);
+        String response = keycloakService.createUser(body.get("username"), body.get("email"), body.get("password"));
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/auth")
     public ResponseEntity<String> getAuthToken(@RequestBody Map<String, String> body) {
-        String username = body.get("username");
-        String password = body.get("password");
-
-        String accessToken = keycloakService.getToken(username, password);
+        String accessToken = keycloakService.getToken(body.get("username"), body.get("password"));
         return ResponseEntity.ok(accessToken);
     }
 
