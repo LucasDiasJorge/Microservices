@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>Workers</module>
-        <module>Payroll</module>
+        <module>Deprecated-Services/Workers</module>
+        <module>Deprecated-Services/Payroll</module>
         <module>Eureka</module>
         <module>API-Gateway</module>
         <module>Config-Server</module>

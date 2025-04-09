@@ -3,11 +3,11 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/API-Gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Config-Server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Deprecated-Services/Payroll/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Deprecated-Services/Workers/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Eureka/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Keycloak/Integration/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/OAuth/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Oauth/Integration/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Payroll/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Workers/src/main/java" charset="UTF-8" />
   </component>
 </project>
