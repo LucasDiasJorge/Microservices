@@ -16,5 +16,6 @@
         <module>API-Gateway</module>
         <module>Config-Server</module>
         <module>Oauth/Integration</module>
+        <module>Kafka-Server/Producer</module>
     </modules>
 </project>
