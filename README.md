@@ -1,46 +1,85 @@
-# Projeto de Microsserviços com Java
+````markdown name=README.md
+# Microservices
 
-Este projeto é uma aplicação que tem como o objetivo de demonstrar como configurar e utilizar tecnologias modernas para criar um sistema escalável e distribuído.
+Este projeto implementa uma arquitetura de microserviços utilizando Java, Spring Cloud, Eureka, Gateway e componentes de autorização e recursos.
+
+## Descrição
+
+O objetivo deste projeto é demonstrar uma arquitetura de microserviços moderna, escalável e resiliente, aproveitando o ecossistema Spring para facilitar o desenvolvimento e a integração dos serviços. O projeto implementa discovery service, API Gateway, autenticação/autorização e serviços de recursos independentes.
+
+## Principais Tecnologias
+
+- **Java**: Linguagem principal para desenvolvimento dos microserviços.
+- **Spring Cloud**: Framework para facilitar a construção de sistemas distribuídos.
+- **Eureka**: Serviço de discovery para registro e localização automática dos microserviços.
+- **Spring Cloud Gateway**: API Gateway para roteamento e filtragem das requisições.
+- **Spring Security**: Gerenciamento de autenticação e autorização.
+- **Docker** (opcional): Para facilitar o deploy e orquestração dos serviços.
 
 ## Estrutura do Projeto
 
-O projeto é dividido em dois microserviços principais:
+```plaintext
+.
+├── eureka-server/         # Serviço de discovery
+├── api-gateway/           # Gateway de API
+├── auth-service/          # Serviço de autenticação/autorização
+├── resource-service-1/    # Exemplo de serviço de recurso
+├── resource-service-2/    # Outro serviço de recurso
+└── README.md
+```
 
-- **Worker**: Responsável por fornecer informações sobre trabalhadores, como nome e renda diária.
-- **Payroll**: Responsável por calcular pagamentos com base nos dados fornecidos pelo serviço Worker.
+## Como Executar
 
-## Tecnologias Utilizadas
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/LucasDiasJorge/Microservices.git
+   cd Microservices
+   ```
 
-- **Spring Boot**: Framework para criação de aplicações Java.
-- **Eureka**: Serviço de descoberta que permite que os microserviços se encontrem e se comuniquem.
-- **OpenFeign**: Biblioteca para simplificar a comunicação entre microserviços através de chamadas REST.
-- **H2 Database**: Banco de dados em memória para testes. _[help](https://stackoverflow.com/questions/67695069/spring-boot-datasource-initialization-error-with-data-sql-script-after-2-5-0-upg)_
-- **Spring Cloud Gateway**: Para gerenciar e rotear requisições entre os microserviços, proporcionando uma única entrada para o sistema. _[help](https://www.youtube.com/watch?v=ju7NTqJxKRs)_
-- **Resilience4j**: Para implementar padrões de tolerância a falhas e melhorar a resiliência do sistema. _[help](https://resilience4j.readme.io/docs/getting-started)_ _[help²](https://www.udemy.com/course/master-microservices-with-spring-docker-kubernetes/)_
-- **Spring Cloud Config**: Para gerenciar a configuração dos microserviços de forma centralizada, permitindo alterações dinâmicas sem necessidade de reinício. (Manutenção)
-- **OAuth 2**: Para implementar autenticação, garantindo que os serviços estejam protegidos e apenas acessíveis a usuários autorizados. _[Thiago Marquet](https://github.com/Thiago-Marquet)_
-- **Docker**: Para implementar facilidades no deploy no serviço de keycloak. _[help](https://github.com/LucasDiasJorge/Tutorial-Docker/blob/main/Example2%20(Keycloak)/docker-compose.yml)_
+2. **Suba o Eureka Server:**
+   ```bash
+   cd eureka-server
+   ./mvnw spring-boot:run
+   ```
 
-## Futuras Evoluções
+3. **Suba o API Gateway:**
+   ```bash
+   cd ../api-gateway
+   ./mvnw spring-boot:run
+   ```
 
-  O projeto será expandido com a adição das seguintes tecnologias e funcionalidades:
+4. **Suba o Auth Service:**
+   ```bash
+   cd ../auth-service
+   ./mvnw spring-boot:run
+   ```
 
-- **OAuth 2**: Para implementar autorização por Role do usuário.
-- **Docker**: Para implementar facilidades no deploy e uso de contêineres.
-- **Kafka**: Para implementar mensageria e programação orientada a eventos entre os serviços.
+5. **Suba os serviços de recursos:**
+   ```bash
+   cd ../resource-service-1
+   ./mvnw spring-boot:run
 
-## Configuração do Ambiente
+   cd ../resource-service-2
+   ./mvnw spring-boot:run
+   ```
 
-### Pré-requisitos
+> **Dica:** Você pode usar Docker Compose para facilitar o processo de execução dos serviços, caso disponível.
 
-- Java 17 ou superior
-- Maven
-- Docker (opcional)
+## Funcionalidades
 
-## Notas finais
+- Registro e descoberta automática de serviços via Eureka.
+- Gateway de API centralizado para roteamento de requisições.
+- Autenticação e autorização centralizadas.
+- Serviços independentes e escaláveis.
 
-Este projeto serve como guia tanto para estudantes de Back End que desejam conhecer o conceito de arquitetura de microsserviços, e para desenvolvedores já alocados no mercado de trabalho, com desejo de replicar os conceitos aqui aplicados ou como forma de referência para a modelagem de um sistema próprio. Sinta-se livre para entrar em contato comigo via Email, Issues ou forks para a atualização, esclarecimentos de dúvidas ou sobre melhorias do projeto.
+## Contribuição
 
-Foi utilizado como base o curso do Nelio Alves, _[link](https://www.udemy.com/course/microsservicos-java-spring-cloud)_, e toneladas de materiais oficiais das tecnologias. E para finalizar, acredito que esse codebase sejá uma boa atualização do curso mencionado, visto as atualizações das tecnologias e liguagem usada. Vem me dando um bom trabalho manter esse código atualizado e em boa legibilidade e documentado, dito isso, toda ajuda é bem vinda. 
+Sinta-se à vontade para abrir issues ou pull requests para sugerir melhorias ou reportar bugs.
 
-Meus agradecimentos, atenciosamente, Lucas Dias Jorge :)
+## Licença
+
+Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+Desenvolvido por [Lucas Dias Jorge](https://github.com/LucasDiasJorge)
+````
