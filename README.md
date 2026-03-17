@@ -1,4 +1,3 @@
-````markdown name=README.md
 # Microservices
 
 Este projeto implementa uma arquitetura de microserviços utilizando Java, Spring Cloud, Eureka, Gateway e componentes de autorização e recursos.
