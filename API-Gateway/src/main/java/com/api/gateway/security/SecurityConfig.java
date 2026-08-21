@@ -4,29 +4,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @Configuration
+@EnableWebFluxSecurity
 public class SecurityConfig {
-
-    private final JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter();
 
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
-
-        http.csrf(ServerHttpSecurity.CsrfSpec::disable);
-
-        http
+        return http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/oauth/**").permitAll() // Permite acesso às rotas do Oauth
-                        .anyExchange().denyAll()
-                )
-                .oauth2ResourceServer(conf -> conf.jwt(Customizer.withDefaults()));
-
-        http.addFilterBefore(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION);
-
-        return http.build();
+                        // Emissão e validação de token são públicas por definição.
+                        .pathMatchers("/oauth/**").permitAll()
+                        .pathMatchers("/fallback").permitAll()
+                        .pathMatchers("/actuator/health/**", "/actuator/info").permitAll()
+                        // Todo o resto exige um JWT válido emitido pelo Keycloak.
+                        .anyExchange().authenticated())
+                .oauth2ResourceServer(conf -> conf.jwt(Customizer.withDefaults()))
+                .build();
     }
 }

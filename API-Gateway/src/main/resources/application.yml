@@ -1,10 +1,60 @@
+server:
+  port: 9090
+
 spring:
   application:
     name: gateway-service
-  profiles:
-    active: dev
-  cloud:
-    config:
-      enabled: true
   config:
-    import: "configserver:http://localhost:8888"
+    import: "optional:configserver:${CONFIG_SERVER_URI:http://localhost:8888}"
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Issuer que vem dentro do token (frontchannel).
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/my-realm}
+          # Chaves buscadas pelo backchannel. Em Docker aponta para o nome do serviço,
+          # enquanto o issuer acima continua sendo o endereço público.
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:8080/realms/my-realm/protocol/openid-connect/certs}
+
+  cloud:
+    gateway:
+      # Spring Cloud Gateway 5.x: o prefixo passou a ser spring.cloud.gateway.server.webflux.*
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          httpclient:
+            connect-timeout: 1000
+            response-timeout: 5s
+          routes:
+            - id: oauth-service
+              uri: lb://OAUTH-SERVICE
+              predicates:
+                - Path=/oauth/**
+              filters:
+                - RewritePath=/oauth/(?<segment>.*),/$\{segment}
+                - name: CircuitBreaker
+                  args:
+                    name: oauthCircuitBreaker
+                    fallbackUri: forward:/fallback
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    org.springframework.security: INFO

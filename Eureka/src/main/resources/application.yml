@@ -1,10 +1,20 @@
+server:
+  port: 8761
+
 spring:
   application:
     name: eureka-service
-  profiles:
-    active: dev
-  cloud:
-    config:
-      enabled: true
+  # Config Server é opcional: sem ele, os defaults abaixo bastam para subir local.
   config:
-    import: "configserver:http://localhost:8888"
+    import: "optional:configserver:${CONFIG_SERVER_URI:http://localhost:8888}"
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

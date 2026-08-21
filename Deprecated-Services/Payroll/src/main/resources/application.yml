@@ -1,0 +1,28 @@
+server:
+  port: 8452
+
+spring:
+  application:
+    name: payroll
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_URI:http://localhost:8888}"
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+info:
+  app:
+    name: Payroll application
+    version: 1.0.0
+    description: Exemplo de uso do Spring Boot Actuator

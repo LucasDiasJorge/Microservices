@@ -1,15 +1,24 @@
 package com.api.payroll.utils;
 
 import com.netflix.discovery.EurekaClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.TimeUnit;
-
+/**
+ * Loga onde o serviço ficou disponível depois que ele sobe.
+ *
+ * A versão anterior dormia 15s dentro do ContextRefreshedEvent, atrasando
+ * a inicialização de toda a aplicação. ApplicationReadyEvent já dispara
+ * depois que o contexto está pronto, sem precisar de sleep.
+ */
 @Component
-public class EurekaServiceListener implements ApplicationListener<ContextRefreshedEvent> {
+public class EurekaServiceListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(EurekaServiceListener.class);
 
     private final EurekaClient eurekaClient;
 
@@ -20,22 +29,15 @@ public class EurekaServiceListener implements ApplicationListener<ContextRefresh
         this.eurekaClient = eurekaClient;
     }
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        try {
-            // Aguardar um curto período para garantir que o serviço esteja registrado
-            TimeUnit.SECONDS.sleep(15);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+    @EventListener(ApplicationReadyEvent.class)
+    public void logRegistration() {
+        var application = eurekaClient.getApplication(applicationName);
+        if (application == null || application.getInstances().isEmpty()) {
+            logger.info("Serviço {} ainda não registrado no Eureka", applicationName);
+            return;
         }
-
-        String serviceUrl = eurekaClient.getApplication(applicationName) != null ?
-                eurekaClient.getApplication(applicationName).getInstances().stream()
-                        .findFirst()
-                        .map(instance -> "http://" + instance.getHostName() + ":" + instance.getPort())
-                        .orElse("Service not registered in Eureka") :
-                "Service not registered in Eureka";
-
-        System.out.println("Service " + applicationName + " is available at: " + serviceUrl);
+        application.getInstances().forEach(instance ->
+                logger.info("Serviço {} disponível em http://{}:{}",
+                        applicationName, instance.getHostName(), instance.getPort()));
     }
 }

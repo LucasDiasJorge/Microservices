@@ -1,11 +1,18 @@
 package com.api.oauth.controller;
 
+import com.api.oauth.dto.CreateUserRequest;
+import com.api.oauth.dto.LoginRequest;
+import com.api.oauth.dto.TokenInfo;
+import com.api.oauth.dto.TokenResponse;
 import com.api.oauth.services.KeycloakService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
@@ -16,25 +23,19 @@ public class UserController {
         this.keycloakService = keycloakService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<String> createUser(@RequestBody Map<String, String> body) {
-        String response = keycloakService.createUser(body.get("username"), body.get("email"), body.get("password"));
-        return ResponseEntity.ok(response);
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createUser(@Valid @RequestBody CreateUserRequest request) {
+        keycloakService.createUser(request.username(), request.email(), request.password());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/auth")
-    public ResponseEntity<String> getAuthToken(@RequestBody Map<String, String> body) {
-        String accessToken = keycloakService.getToken(body.get("username"), body.get("password"));
-        return ResponseEntity.ok(accessToken);
+    @PostMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TokenResponse> getAuthToken(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(keycloakService.getToken(request.username(), request.password()));
     }
 
     @PostMapping(value = "/validate", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<KeycloakService.CustomAccessToken> validateToken(@RequestHeader("Authorization") String token) {
-        try {
-            KeycloakService.CustomAccessToken validatedToken = keycloakService.validateToken(token);
-            return ResponseEntity.ok(validatedToken);
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body(null);
-        }
+    public ResponseEntity<TokenInfo> validateToken(@RequestHeader("Authorization") String authorization) {
+        return ResponseEntity.ok(keycloakService.validateToken(authorization));
     }
 }

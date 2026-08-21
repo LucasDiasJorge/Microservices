@@ -1,0 +1,22 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/LucasDiasJorge/Microservices-config
+          default-label: main
+          # Repositório público: não requer credenciais.
+          # Para um repo privado, defina CONFIG_GIT_USER / CONFIG_GIT_PASS.
+          username: ${CONFIG_GIT_USER:}
+          password: ${CONFIG_GIT_PASS:}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

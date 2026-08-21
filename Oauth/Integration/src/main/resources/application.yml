@@ -1,10 +1,32 @@
+server:
+  port: 4321
+
 spring:
   application:
     name: oauth-service
-  profiles:
-    active: dev
-  cloud:
-    config:
-      enabled: true
   config:
-    import: "configserver:http://localhost:8888"
+    import: "optional:configserver:${CONFIG_SERVER_URI:http://localhost:8888}"
+
+keycloak:
+  # Endereço usado para falar com o Keycloak (backchannel).
+  server-url: ${KEYCLOAK_URL:http://localhost:8080}
+  # Issuer que consta dentro do token (frontchannel). Difere de server-url quando o
+  # Keycloak roda em container e o cliente acessa por localhost. Vazio = deriva de server-url.
+  issuer-uri: ${KEYCLOAK_ISSUER_URI:}
+  realm: ${KEYCLOAK_REALM:my-realm}
+  client-id: ${KEYCLOAK_CLIENT_ID:my-client}
+  # Credenciais vêm do ambiente. Nada de segredo versionado aqui.
+  client-secret: ${KEYCLOAK_CLIENT_SECRET:}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
